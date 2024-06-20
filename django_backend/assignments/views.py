@@ -81,8 +81,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
     def create_question(self, request, quiz_id=None):
         quiz = get_object_or_404(Quiz, id=quiz_id)
         question_data = request.data
-        question_data['quiz'] = quiz.id
-        
+        question_data['quiz_id'] = quiz
+        print('quiz data', quiz_id)
+        print('question data', question_data)
+
         question_serializer = QuestionSerializer(data=question_data)
         if question_serializer.is_valid():
             question = question_serializer.save()
@@ -166,13 +168,26 @@ class QuizViewSet(viewsets.ModelViewSet):
     serializer_class = QuizSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_user(self):
+        return User.objects.get(id=self.request.user.id)
+
     @action(methods=['post'], detail=False ,url_path='create-quiz')
     def create_quiz(self, request):
-        serializer = QuizSerializer(data=request.data)
+        # Get the user object
+        user = self.get_user()
+        data = request.data.copy()
+        data['teacher'] = request.user.id
+        print('user', user)
+        print('id', request.user.id)
+
+        serializer = QuizSerializer(data=data)
         if serializer.is_valid():
             serializer.save(teacher=request.user)
             print("teacher: ", request.user)
+            print("data: ", data)
+            print("user: ", user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['post'], url_path='submit')

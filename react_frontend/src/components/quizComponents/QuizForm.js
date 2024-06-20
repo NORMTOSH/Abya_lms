@@ -12,7 +12,6 @@ const QuizForm = () => {
         chapter: '',
         quiz_title: '',
         quiz_description: '',
-        teacher: userDetails.user.user_type,
     });
 
     const [courses, setCourses] = useState([]);
@@ -65,7 +64,6 @@ const QuizForm = () => {
         formDataToSend.append('chapter', formData.chapter);
         formDataToSend.append('quiz_title', formData.quiz_title);
         formDataToSend.append('quiz_description', formData.quiz_description);
-        formDataToSend.append('teacher', formData.teacher);
     
         // Log form data to check what is being sent
         for (let pair of formDataToSend.entries()) {

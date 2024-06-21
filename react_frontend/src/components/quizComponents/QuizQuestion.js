@@ -8,7 +8,7 @@ const QuizQuestion = () => {
     const [quizzes, setQuizzes] = useState([]);
     const [isMultipleChoice, setIsMultipleChoice] = useState(false);
     const [formData, setFormData] = useState({
-        quiz: '',
+        quiz_id: '',
         question_text: '',
         choices: ['', '', '', ''],
         correct_choices: [],
@@ -85,7 +85,7 @@ const QuizQuestion = () => {
         e.preventDefault();
     
         const formDataToSend = new FormData();
-        formDataToSend.append('quiz', formData.quiz); // Ensure formData.quiz is the quiz ID (an integer)
+        formDataToSend.append('quiz_title', formData.quiz_id); // Ensure formData.quiz is the quiz ID (an integer)
         formDataToSend.append('question_text', formData.question_text);
     
         formData.choices.forEach((choice, index) => {

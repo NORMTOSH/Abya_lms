@@ -80,8 +80,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], url_path='create-question/(?P<quiz_id>[^/.]+)')
     def create_question(self, request, quiz_id=None):
         quiz = get_object_or_404(Quiz, id=quiz_id)
-        question_data = request.data
-        question_data['quiz_id'] = quiz
+        question_data = request.data.copy()
+        question_data['quiz_title'] = quiz.id
         print('quiz data', quiz_id)
         print('question data', question_data)
 
